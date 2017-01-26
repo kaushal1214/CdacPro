@@ -1,0 +1,101 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h2 class="panel-title">
+			{{device.name}}
+		</h2>
+	</div>
+	<div class="panel-body">
+		<div class="col-md-12 text-left">
+			
+			<label><strong>Unique ID: &nbsp;</strong></label>{{device.id}}
+			<br/>
+			<label><strong>Description: &nbsp;</strong></label>{{device.description}}
+			<br/>
+			<label><strong>Value: &nbsp;</strong></label>{{device.value}}
+			<br/>
+			<label><strong>Sensor Type:&nbsp;</strong></label><a class="{{device.type}}">{{device.type}}</a>			            	
+		</div>
+	</div>
+	<div class="panel-footer">
+		<div class="row">
+			<div class="col-md-8">
+				Added:
+				<em class="text-muted">{{ timeago device.timestamp}}</em>
+				&nbsp;
+				Last Updated:
+				<em class="text-muted">{{timeago device.timestamp}}</em>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<div class="row">
+			<div class="col-md-8">
+				<strong class="panel-title">Details</strong>
+			</div>
+			<div class="clo-md-4 text-right">
+				<button class="btn btn-default btn-sm" id="btn-details" data-id="{{image.uniqueId}}">
+				<i class="fa fa-cog" aria-hidden="true"></i> Settings
+				</button>
+			</div>
+		</div>
+		<div class="panel-body">
+
+			<div id="device-details">
+				<label>Lattitude:&nbsp;</label>
+                                      	<input type="text" value="{{device.geolocation.latitude}}" id="lat"></input>&nbsp;
+                                <label>Longitude:&nbsp;</label>
+                                      	<input type="text" value="{{device.geolocation.longitude}}" id="lon"></input>
+                                
+				<div class="col-mid-12 text-right">
+						<a class="btn btn-success" href="#">Save Changes</a>
+				</div>
+
+				<form method="post" action="/devices/{{device.id}}/delete">
+                			<div class="panel-body form-horizontal">
+							<div class="form-group col-md-12">
+                                        				<button type="submit" id="login-btn"
+                                                				class="btn btn-danger" type="button">
+                                                			<i class="fa fa-trash" aria-hidden="true">
+                                                			</i> Delete</button>
+							</div>
+                        		</div>
+					
+				</form>
+                 </div>
+
+		 <h3>Sensor Location</h3>
+    			<div id="map"></div>
+    				<script>
+      					function initMap() {
+						var latti= Number(document.getElementById('lat').value);
+						var long= Number(document.getElementById('lon').value);
+						console.log(latti.value);
+					        var uluru = {lat:latti, lng: long};
+					        var map = new google.maps.Map(document.getElementById('map'), {
+						          zoom: 15,
+						          center: uluru,
+							  zoomControl: false,
+      							  scaleControl: false,
+							  streetViewControl: false,
+							  rotateControl: false,
+							  fullscreenControl: false,
+							gestureHandling: 'none'
+							
+				
+					        });
+					        var marker = new google.maps.Marker({
+					          position: uluru,
+					          map: map
+					        });
+					      }
+				    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaIgbzNwqEB_-3sbLifDj2RmkrDhL2UGI&callback=initMap" async defer>
+    </script>
+		</div>
+	</div>
+</div>
+				
+					

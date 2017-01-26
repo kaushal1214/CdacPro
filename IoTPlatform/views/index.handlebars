@@ -1,0 +1,83 @@
+<div class="panel panel-primary">
+	<div class="panel-heading">
+		<h3 class="panel-title">Add a New Device</h3>
+	</div>
+	<form method="post" action="/devices" enctype="application/x-www-form-urlencoded">
+		<div class="panel-body form-horizontal">
+			<div class="form-group col-md-12">	
+				<label class="col-md-2 control-label"
+			 		for="name">Name:</label>
+				<div class="col-md-10">
+					<input class="form-control" type="text"  name="title">
+				</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label class="col-md-2 control-label"
+			 		for="description">Description:</label>
+				<div class="col-md-10">
+					<textarea class="form-control"
+						name="des" rows="2"></textarea>
+				</div>
+			</div>
+			
+			<div class="form-group col-md-12">
+				<label class="col-md-2 control-label"
+			 		for="typeofsensor">Sensor:</label>
+				<div class="col-md-10">
+					 <select name="sensors" class="form-control">
+                                                <option>Type of Sensor</option>
+                                                <option value="Temp">Temperature</option>
+                                                <option value="Humid">Humidity</option>
+                                                <option value="Soil">Soil</option>
+                                        </select>
+
+				</div>
+			</div>
+			
+			<div class="form-group col-md-12">
+                               
+                            
+					<label class="col-md-2"
+                                        for="geolocation_la">Latitude:</label>
+                                	<div class="col-md-3">
+                                        <input class="form-control"
+                                                name="latt" type="text"></input>
+                                	</div>
+					<label class="col-md-2" for="geolocation_lo">Longitude:</label>
+                                        <div class="col-md-3">
+                                        <input class="form-control"
+                                                name="longi" type="text"></input>
+                                        </div>
+                        </div>
+
+
+
+			<div class="form-group col-md-12">
+				<div class="col-md-12 text-right">
+					<button type="submit" id="login-btn"
+						class="btn btn-success" type="button">
+						<i class="fa fa-cloud-upload ">
+						</i> Save Device</button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="panel panel-default">
+        <div class="panel-heading">
+                <h3 class=panel-title">Devices List
+                </h3>
+        </div>
+
+        <div class="panel-body">
+                {{#each Devices}}
+                        <div class="col-md-4 text-center" style="padding-bottom:lem;">
+				<a href="devices/{{id}}">
+                                        <img src="/public/upload/{{name}}" alt="{{name}}" id="{{type}}" style="color: #000; width: 175px; height: 175px;"
+                                                class="img-thumbnail">
+                                </a>
+                        </div>
+                {{/each}}
+        </div>
+</div>
+

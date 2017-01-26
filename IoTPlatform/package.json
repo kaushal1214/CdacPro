@@ -1,0 +1,29 @@
+{
+  "name": "mage",
+  "version": "1.0.0",
+  "description": "A Web app to image upload",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/kaushal1214/IoTPlatform-Demo"
+  },
+  "keywords": [
+    "IoT"
+  ],
+  "author": "Kaushal",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cookie-parser": "^1.4.3",
+    "errorhandler": "^1.5.0",
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
+    "method-override": "^2.3.7",
+    "moment": "^2.17.1",
+    "morgan": "^1.7.0",
+    "puid": "^1.0.5"
+  }
+}
