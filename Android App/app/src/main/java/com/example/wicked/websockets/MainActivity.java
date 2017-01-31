@@ -3,8 +3,10 @@ package com.example.wicked.websockets;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
@@ -13,10 +15,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -26,9 +30,10 @@ import java.net.URISyntaxException;
 
 public class MainActivity extends AppCompatActivity {
     TextView soilDisplay, tempDisplay, humDisplay;
-    TextView pumpDisplay, ventilatorDisplay;
-    WebSocketClient client;
 
+    WebSocketClient client;
+    ToggleButton Pump, Ventilator;
+    boolean PUMP, VENTILATOR;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,8 +45,49 @@ public class MainActivity extends AppCompatActivity {
         humDisplay = (TextView)findViewById(R.id.tvHumidityData);
 
         //Actuator textview
-        pumpDisplay = (TextView)findViewById(R.id.tvpumpDisplay);
-        ventilatorDisplay = (TextView)findViewById(R.id.tvpumpDisplay);
+
+
+        //ToggleButton
+        Pump = (ToggleButton)findViewById(R.id.tgSoil);
+        Ventilator = (ToggleButton)findViewById(R.id.tgHumi);
+
+        Pump.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    Toast.makeText(MainActivity.this,"Pump is turning 'ON'", Toast.LENGTH_LONG).show();
+                    PUMP = true;
+                    client.send("Actuator-Pump1:ON");
+
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this,"Pump is now 'OFF'", Toast.LENGTH_LONG).show();
+                    PUMP = false;
+                    client.send("Actuator-Pump1:OFF");
+                }
+            }
+        });
+
+        Ventilator.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                {
+                    Toast.makeText(MainActivity.this,"Ventilator is turning 'ON'", Toast.LENGTH_LONG).show();
+                    VENTILATOR = true;
+                    client.send("Actuator-Ventilator1:ON");
+
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this,"Ventilator is now 'OFF'", Toast.LENGTH_LONG).show();
+                    VENTILATOR = false;
+                    client.send("Actuator-Ventilator1:OFF");
+                }
+            }
+        });
 
         //Tabs defination
         TabHost tabs = (TabHost)findViewById(R.id.tabhost);
@@ -92,33 +138,39 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         //Data format ==> "Data-Soil:34"; Temp:34 ; Humid:78
-                        //Actuator format ==> "Actuator-Pump:ON";
+                        
 
                         String header[] = message.split("-");
-
-
                         if(header[0].contentEquals("Data")) {
                             String data[] = header[1].split(":");
-                            if(data[0].contentEquals("Soil"))
-                                soilDisplay.setText(data[1] + "%");
+                            if(data[0].contentEquals("Soil")) {
+                                soilDisplay.setText(data[1]);
+                                float value = Float.parseFloat(data[1]);
+
+                                //Pump: Turn On : Value >3000
+                                if(value>3000)
+                                {
+                                    alertDialog("Soil Moisture","It seems your field soil is running out of water. Please Turn On the Pump.");
+                                }
+                            }
                             else if(data[0].contentEquals("Temp"))
                                 tempDisplay.setText(data[1] + "'C");
-                            else if (data[0].contentEquals("Humid"))
+                            else if (data[0].contentEquals("Humid")) {
                                 humDisplay.setText(data[1] + "%");
+                                float value = Float.parseFloat(data[1]);
+
+                                //Ventilator: Turn On for : value> 70
+                                if (value >70 ) {
+                                    alertDialog("Humidity","The air is really humid. Please Turn On the Ventilator.");
+                                }
+
+                            }
                             else
                                 Toast.makeText(MainActivity.this,"Not Applicable",Toast.LENGTH_LONG).show();
                         }
-                        else if (header[0].contentEquals("Actuator")){
-                            String data[] = header[1].split(":");
-                            if(data[0].contentEquals("Pump"))
-                                pumpDisplay.setText(data[1]);
-                            else if(data[0].contentEquals("Ventilator"))
-                                ventilatorDisplay.setText(data[1]);
-                            else if (data[0].contentEquals("AC"))
-                                Toast.makeText(MainActivity.this,"AC Data received",Toast.LENGTH_LONG).show();
-                            else
-                                Toast.makeText(MainActivity.this,"Not Applicable",Toast.LENGTH_LONG).show();
-                        }
+
+
+
                     }
                 });
 
@@ -135,6 +187,20 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         client.connect();
+
+    }
+
+    private void alertDialog(String title, String msg) {
+        AlertDialog.Builder ad = new AlertDialog.Builder(this);
+        ad.setTitle(title);
+        ad.setMessage(msg);
+        ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        ad.show();
     }
 
     @Override
