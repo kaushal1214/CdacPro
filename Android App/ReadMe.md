@@ -1,1 +1,0 @@
-Websocket based Android App

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#bbbb77"
+    tools:context="com.example.wicked.websockets.MainActivity">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="ws://127.0.0.1:8888"
+        android:ems="9"
+        android:id="@+id/etsocket"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Connect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onConnect"
+        android:layout_alignBottom="@+id/etsocket"
+        android:layout_toRightOf="@+id/etsocket"
+        android:layout_toEndOf="@+id/etsocket"
+        android:layout_marginLeft="5dp"
+         />
+
+    <TabHost
+        android:layout_width="match_parent"
+        android:layout_height="300dip"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/etsocket"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/tabhost">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/tab1"
+                android:orientation="vertical"
+                    android:background="#dddddd">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/soil"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="40sp"
+                        android:text="Soil Moisture"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp"
+                        android:id="@+id/tvSoilData"
+                        android:text="45.6"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="25sp"
+                            android:layout_marginTop="10dp"
+                            android:text="Pump Status: "
+
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="25sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"
+                            android:text="ON"
+                            android:id="@+id/tvpumpDisplay"
+                            />
+
+                    </LinearLayout>
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tgSoil"
+                        android:textOn="ON"
+                        android:textOff="OFF"
+                        android:layout_gravity="center_horizontal"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tab2"
+
+                    android:orientation="vertical"
+                    android:background="#dddddd">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/temp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="40sp"
+                        android:text="Temperature"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp"
+                        android:id="@+id/tvTempData"
+                        android:text="23.56 'C"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tab3"
+                    android:orientation="vertical"
+                    android:background="#dddddd">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/humidity"
+                        android:layout_gravity="center"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="40sp"
+                        android:text="Humidity"
+                        android:gravity="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="30sp"
+                        android:id="@+id/tvHumidityData"
+                        android:text="56.78"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="25sp"
+                            android:layout_marginTop="10dp"
+                            android:text="Ventilator Status: "
+
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="25sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"
+                            android:text="ON"
+                            android:id="@+id/tvventilatorDisplay"
+                            />
+
+                    </LinearLayout>
+                    <ToggleButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tgHumi"
+                        android:textOn="ON"
+                        android:textOff="OFF"
+                        android:layout_gravity="center_horizontal"
+                        />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+
+
+
+</RelativeLayout>
