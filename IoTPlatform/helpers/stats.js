@@ -1,8 +1,21 @@
+var Models = require('../models').Devices;
+
 module.exports = function()
 {
-	var stats ={
-		total: 0,
-		online: 0
-	};
+	var count;
+	var stats={};
+	Models.find({},function(err,docs){
+		if(err) 
+			console.log(err);
+		else
+		{	
+			count = Object.keys(docs).length;
+			console.log(count);
+	
+			stats.total=count;
+			stats.online= 0;
+			
+		}
+	});
 	return stats;
 }

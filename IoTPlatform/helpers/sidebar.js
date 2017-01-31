@@ -4,7 +4,7 @@ var Stats = require('./stats'),
 module.exports = function(viewModel,callback){
 		viewModel.sidebar= {
 			stats: Stats(),
-			help: Help.devices()
+			help: Help.devices(viewModel)
 		};
 		callback(viewModel);
 };
