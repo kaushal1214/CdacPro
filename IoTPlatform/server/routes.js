@@ -11,5 +11,6 @@ module.exports = function(app){
 	router.post('/devices/:device_id',image.data);
 	router.delete('/devices/:device_id',image.delete);
 	router.post('/devices/:device_id/delete',image.delete);
+	router.post('/devices/:device_id/geolocation',image.geo);
 	app.use(router);
 };

@@ -28,15 +28,16 @@
 
 // Update these with values suitable for your network.
 
-const char* ssid = "dell";
-const char* password = "dell12345";
-const char* mqtt_server = "192.168.7.102";
+const char* ssid = "Xperia";
+const char* password = "";
+const char* mqtt_server = "192.168.43.201";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 long lastMsg = 0;
 char msg[50];
 int value = 0;
+int state1=0,state2=0;
 
 int led1=5;
 int led2=4,led3=0,led4=2;
@@ -64,6 +65,9 @@ void setup_wifi() {
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
+  //Message is in the form (Switch no,State)Eg:
+      //To on Switch 1-->(1,1)
+      //To off Switch 2-->(2,0)
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
@@ -71,7 +75,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
     Serial.print((char)payload[i]);
   }
   Serial.println();
-
+ 
+    
+   
+ 
+  //payload[0]=Switch no && payload[1]=',' && payload[2]=State
   // Switch on the LED if an 1 was received as first character
   if ((char)payload[2] == '1') {
          Serial.print("In if loop if on state");
@@ -94,7 +102,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
     default: Serial.print("Invalid pin number");
                break;     
     }
-  } else {
+     
+  //  client.publish("outTopic", "{\"Switch\""+":"+(char)payload[0]+",\"State\":1}");
+  } else if ((char)payload[2] == '0'){
    // digitalWrite(BUILTIN_LED, LOW);
      char ch=((char)payload[0]);
      Serial.print("In else loop if off state");
@@ -102,6 +112,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     {
     case '1':digitalWrite(led1, LOW);
     Serial.print((char)payload[0]);
+   
             break;
    case '2':digitalWrite(led2, LOW);
     Serial.print((char)payload[0]);
@@ -115,6 +126,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
    default: Serial.print("Invalid pin number");
                break;     
     }
+//client.publish("outTopic", "Relay"+(char)payload[0]+"is off");
+//client.publish("outTopic", "{\"Switch\""+":"+(char)payload[0]+",\"State\":0}");
+    
   }
 
 }
@@ -129,10 +143,11 @@ void reconnect() {
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
       Serial.println("connected");
-      // Once connected, publish an announcement...
-     // client.publish("outTopic", "hello world");
-      // ... and resubscribe
-      client.subscribe("inTopic");
+   
+
+
+     
+      client.subscribe("hello");
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -163,13 +178,26 @@ void loop() {
   }
   client.loop();
 
- /* long now = millis();
-  if (now - lastMsg > 2000) {
-    lastMsg = now;
-    ++value;
-    snprintf (msg, 75, "%ld", value);
-  //  Serial.print("Publish message: ");
-   // Serial.println(msg);
-   // client.publish("outTopic", msg);*/
-  //}
+
 }
+
+
+/*void publish_function()
+{
+
+
+    Serial.print( digitalRead(5));
+    if( digitalRead(5)== HIGH)
+    client.publish("hello", "Actuator-Pump1:ON");
+    else
+     client.publish("hello", "Actuator-Pump1:OFF");
+    
+
+    Serial.print(digitalRead(0));
+    if(digitalRead(0)==HIGH)
+    client.publish("hello", "Actuator-Ventilator:ON");
+    else
+     client.publish("hello", "Actuator-Ventilator:OFF");
+  
+}*/
+

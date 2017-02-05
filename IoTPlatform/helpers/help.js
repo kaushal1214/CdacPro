@@ -1,9 +1,10 @@
 
 module.exports = {
-	devices	: function(){
+	devices	: function(viewModel){
+			var device='[device-id]';
 			
 			var device_id={
-					deviceId:'abc1234'		
+					deviceId:device
 			};
 		return device_id;
 		}		
